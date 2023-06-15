@@ -107,28 +107,40 @@ WHERE address='259 Ipoh Drive';
 
 ## Statements used: ORDER BY
 
+### Orders everything in descending order
+
 SELECT * FROM customer <br>
-ORDER BY first_name DESC; *Orders everything in descending order*
+ORDER BY first_name DESC; 
+
+### Orders first by id and then by name in ascending order
 
 SELECT store_id,first_name,last_name FROM customer <br>
-ORDER BY store_id,first_name ASC; *Orders first by id and then by name in ascending order*
+ORDER BY store_id,first_name ASC; 
+
+### Orders first by id in decending order and then by name in decending order
 
 SELECT store_id,first_name,last_name FROM customer <br>
-ORDER BY store_id DESC,first_name ASC; *Orders first by id in decending order and then by name in decending order*
+ORDER BY store_id DESC,first_name ASC;
 
 ## Statements used: LIMIT
 
+### Get the top two most oldest transaction
+
 SELECT * FROM payment <br>
 ORDER BY payment_date ASC <br>
-LIMIT 2; *Get the top two most oldest transaction*
+LIMIT 2;
+
+### Get the top five most recent payments which amounts weren't zero
 
 SELECT * FROM payment <br>
 WHERE amount != 0 <br>
 ORDER BY payment_date DESC <br>
-LIMIT 5; *Get the top five most recent payments which amounts weren't zero*
+LIMIT 5;
+
+### Get Table's first rows
 
 SELECT * FROM payment <br>
-LIMIT 1; *Get Table's first rows*
+LIMIT 1;
 
 ## Challenge Three
 
@@ -159,47 +171,71 @@ WHERE length <= 50;
 
 ## Statements used: BETWEEN
 
-SELECT * FROM payment <br>
-WHERE amount BETWEEN 8 AND 9; *Get all columns that are between 8$ to 9$*
-
-SELECT COUNT(*) FROM payment <br>
-WHERE amount BETWEEN 8 AND 9; *count how many transactions are between 8$ ansd 9$*
-
-SELECT COUNT(*) FROM payment <br>
-WHERE amount NOT BETWEEN 8 AND 9; *count how many transactions aren't between 8$ and 9$*
+### Get all columns that are between 8$ to 9$*
 
 SELECT * FROM payment <br>
-WHERE payment_date BETWEEN '2007-02-01' AND '2007-02-15'; *Get all columns between transaction dates*
+WHERE amount BETWEEN 8 AND 9;
+
+### Count how many transactions are between 8$ ansd 9$
+
+SELECT COUNT(*) FROM payment <br>
+WHERE amount BETWEEN 8 AND 9;
+
+### Count how many transactions aren't between 8$ and 9$
+
+SELECT COUNT(*) FROM payment <br>
+WHERE amount NOT BETWEEN 8 AND 9; 
+
+### Get all columns between transaction dates
+
+SELECT * FROM payment <br>
+WHERE payment_date BETWEEN '2007-02-01' AND '2007-02-15';
 
 ## Statements used: IN
 
+### All rows that have payments that are either 0.99, 1.99 or 7.99
+
 SELECT * FROM payment <br>
 WHERE amount in(0.99,1.99,7.99) <br>
-ORDER BY amount; *All rows that have payments that are either 0.99, 1.99 or 7.99*
+ORDER BY amount;
+
+### How many payments are either 0.99, 1.99 or 7.99?
 
 SELECT COUNT(*) FROM payment  <br>
-WHERE amount in(0.99,1.99,7.99); *How many payments are either 0.99, 1.99 or 7.99?*
+WHERE amount in(0.99,1.99,7.99); 
+
+### Are there customers called john, jake or julie
 
 SELECT * FROM customer <br>
-WHERE first_name in('John','Jake','Julie');  *Are there customers called john, jake or julie*
+WHERE first_name in('John','Jake','Julie'); 
 
 ## Statements used: LIKE and ILIKE
 
+### Get the amount of names that start with the letter J
+
 SELECT COUNT(*) FROM customer <br>
-WHERE first_name LIKE  'J%'; *Get the amount of names that start with the letter J*
+WHERE first_name LIKE  'J%';
+
+### List all the names and surnames that start with J for name and S for surname
 
 SELECT first_name,last_name FROM customer <br>
-WHERE first_name LIKE  'J%' AND last_name LIKE 'S%'; *List all the names and surnames that start with J for name and S for surname*
+WHERE first_name LIKE  'J%' AND last_name LIKE 'S%'; 
+
+### Ignoring case sensitivity
 
 SELECT first_name,last_name FROM customer <br>
-WHERE first_name ILIKE  'j%' AND last_name ILIKE 's%'; *Ignoring case sensitivity*
+WHERE first_name ILIKE  'j%' AND last_name ILIKE 's%'; 
+
+### List all customers that start with any single character followed by her and any amount of characters
 
 SELECT * FROM customer <br>
-WHERE first_name ILIKE  '_her%'; *List all customers that start with any single character followed by her and any amount of characters*
+WHERE first_name ILIKE  '_her%';
+
+### List all customers that Start with A and are ordered by there last names
 
 SELECT * FROM customer <br>
 WHERE first_name LIKE 'A%' <br>
-ORDER BY last_name; *List all customers that Start with A and are ordered by there last names*
+ORDER BY last_name;
 
 ## General Challenge
 
