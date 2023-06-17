@@ -2,6 +2,8 @@ Viewing Tables in Postgre:
 
 Databases -> [DATABASE NAME] -> Schemas -> public -> Tables
 
+# Section One: SQL Statement Fundamentals
+
 ## Statements used: SELECT
 
 SELECT * FROM actor;
@@ -142,8 +144,7 @@ LIMIT 5;
 SELECT * FROM payment <br>
 LIMIT 1;
 
-## Challenge Three
-
+## Challenge Four
 - Situtation One
     - We want to reward our first 10 paying customers.
     - What are the customer ids of the first 10 customers who created a payment?
@@ -281,3 +282,150 @@ AND replacement_cost BETWEEN 5 AND 15;
 Answer: <br>
 SELECT COUNT(*) FROM film <br>
 WHERE title LIKE '%Truman%';
+
+# Section Two: GROUP BY Statements
+
+## Aggregate Functions
+
+### Whats the minimum replacement cost for a film?
+
+SELECT MIN(replacement_cost) FROM film;
+
+### Whats the maximum replacement cost for a film?
+
+SELECT MAX(replacement_cost) FROM film;
+
+### What are the minimum and maximum replacement costs for a film?
+
+SELECT MAX(replacement_cost), MIN(replacement_cost) FROM film;
+
+### Whats the average replacement cost for a film in 2 decimal places?
+
+SELECT ROUND(AVG(replacement_cost), 2) <br>
+FROM film;
+
+### Whats the sum of all replacement costs for films?
+
+SELECT SUM(replacement_cost) FROM film;
+
+## GROUP BY
+
+### What are the distinct customer ids? 
+
+SELECT customer_id FROM payment <br>
+GROUP BY customer_id;
+
+### What are the customer id's sum amount in descending order? 
+
+SELECT customer_id, SUM(amount) FROM payment <br>
+GROUP BY customer_id <br>
+ORDER BY SUM(amount) DESC;
+
+### Whats the total spent by a customer with staff?
+
+SELECT customer_id, staff_id, SUM(amount) FROM payment <br>
+GROUP BY staff_id, customer_id <br>
+ORDER BY customer_id;
+
+### How much money are we making every day?
+
+SELECT DATE(payment_date), SUM(amount) FROM payment <br>
+GROUP BY DATE(payment_date) <br>
+ORDER by DATE(payment_date) ASC;
+
+## Challenge Five
+- Situtation One
+    - We have two staff members, with Staff IDs 1 and 2. We want to give a bonus to the staff member that handled the most payments.
+    (Most in terms of number if payments processed, not total dollar amount).
+    - How many payments did each staff meber handle and who gets the bonus?
+
+Answer: <br>
+SELECT staff_id, COUNT(amount) <br>
+FROM payment <br>
+GROUP BY staff_id <br>
+ORDER BY SUM(amount) DESC;
+
+- Situtation Two
+    - Corporate HQ is conducting a study on the relationship between replacement cost and a movie MPAA rating (e.g G, PG, R, etc...)
+    - What is the average replacement cost per MPAA rating?
+
+Answer: <br>
+SELECT rating, ROUND(AVG(replacement_cost), 2) <br>
+FROM film <br>
+GROUP BY rating <br>
+ORDER BY AVG(replacement_cost) DESC;
+
+- Situtation Three
+    - We are running a promotion to reward our top 5 customers with coupons.
+    - What are the customer_ids of the top 5 customers by total spent?
+
+SELECT customer_id, SUM(amount) <br>
+FROM payment <br>
+GROUP BY customer_id <br>
+ORDER BY SUM(amount) DESC <br>
+LIMIT 5;
+
+## HAVING
+
+### Whats the sum spend by a customer id  which is over 100?
+
+SELECT customer_id, SUM(amount) FROM payment <br>
+GROUP BY customer_id <br>
+HAVING SUM(AMOUNT) > 100 <br>
+ORDER BY SUM(AMOUNT);
+
+### How many customers are there in each store over 300?
+
+SELECT store_id, COUNT(customer_id) FROM customer <br>
+GROUP BY store_id <br>
+HAVING COUNT(customer_id) > 300;
+
+## Challenge Six
+
+- Situtation One
+    - We are launching a platinum service for our most loyal customers. We will assign platinum status to customers that have had 40 or more transaction payments.
+    - What customer_ids are eligible for platinum status?
+
+Answer: <br>
+SELECT customer_id, COUNT(amount) FROM payment <br>
+GROUP BY customer_id <br>
+HAVING COUNT(amount) >= 40; <br>
+
+
+- Situtation Two
+    - What are the customer_ids of customers who have spent more than 100$ in payment transactions with our staff_ids memebr 2?
+
+Answer: <br>
+SELECT customer_id, SUM(amount) FROM payment <br>
+WHERE staff_id=2 <br>
+GROUP BY customer_id <br>
+HAVING SUM(amount) > 100;
+
+# Assesment Test 1
+
+- Question One
+    - Return the customer IDs of customers who have spent at least $110 with the staff member who has an ID of 2.
+
+Answer:<br>
+SELECT customer_id, SUM(amount) FROM payment <br>
+WHERE staff_id=2 <br>
+GROUP BY customer_id <br>
+HAVING SUM(amount) >= 110;
+
+- Question Two
+    - How many films begin with the letter J?
+
+Answer:<br>
+SELECT COUNT(*) FROM film <br>
+WHERE title LIKE 'J%';
+
+- Question Three
+    - What customer has the highest customer ID number whose name starts with an 'E' and has an address ID lower than 500?
+
+Answer:<br>
+SELECT first_name,last_name FROM customer<br>
+WHERE first_name LIKE 'E%' AND address_id < 500<br>
+ORDER BY customer_id DESC<br>
+LIMIT 1;
+
+ 

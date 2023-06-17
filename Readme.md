@@ -7,6 +7,8 @@
     -   FROM sales
     -   ORDER BY first_name;
 
+# Section One: SQL Statement Fundamentals
+
 ## SELECT 
 
 The most common statement used, it allows us to retrieve information about a table.
@@ -161,3 +163,66 @@ We can also combine pattern matching operators to create more complex patterns.
     - Cheryl
     - Theresa
     - Sherri
+
+# Section Two: GROUP BY Statements
+
+GROUP BY will allow us to aggregate data and apply funcations to better understand how data is distributed per category.
+
+## Aggregate Functions
+
+The main idea behind an aggregate function is to take multiple inputs and return a single output.
+
+The most common aggregate functions:
+
+- AVG() - returns average value.
+- COUNT() - returns number of values.
+- MAX() - returns maximum value.
+- MIN() - returns minimum value.
+- SUM() - returns the sum of all values.
+
+Aggregate functions calls happen only in the SELECT clause or the HAVING clause.
+
+- Special Notes
+    - AVG() returns a floating point value many decimal places (e.g. 2.342418..)
+        - We can use ROUND() to specify precision after the decimal.
+
+    - COUNT() simply returns  the number of rows, which simply means by convention we just use COUNT(*).
+
+## GROUP BY
+
+Allows us to aggregate columns per some category.
+
+- Example syntax for GROUP BY:
+    - SELECT category_col, AGG(data_col)
+      FROM table
+      WHERE category_col!='A'
+      GROUP BY category_col
+    
+The GROUP BY clause must appear right after a FROM or WHERE statement.
+
+In the SELECT statement, columns must either have an aggregate function or be in the GROUP BY call.
+
+WHERE statements should not refer to the aggregation result, later on we will learn to use HAVING to filter those results.
+
+If we want to sort the result based on the aggregate, we need to make sure to reference the entire function.
+
+- Example:
+    - SELECT company, SUM(sales) 
+      FROM finance_table
+      GROUP BY company
+      ORDER BY SUM(sales)
+
+## HAVING
+
+We can't use WHERE to filter based off of aggregate results, because those happen after a WHERE is executed.
+
+- SELECT comapny, SUM(sales)
+  FROM finance_table
+  WHERE company!='Google'
+  GROUP BY company
+  HAVING SUM(sales) > 1000
+
+Having allows us to use the aggregate result as a filter along with a GROUP BY.
+
+
+
